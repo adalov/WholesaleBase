@@ -1,0 +1,15 @@
+﻿@model WholesaleBase.Models.TurnoverNotice
+<span style=@(Model.TurnoverNoticeStatus.Name == "В ожидании" ? "color:green" : (Model.TurnoverNoticeStatus.Name == "Отменено" ? "color:red" : "color:black") )>@Html.DisplayFor(model => model.TurnoverNoticeStatus.Name)</span>
+
+@if (Model.TurnoverNoticeStatus.Name == "В ожидании")
+{
+    if (User.IsInRole("storekeeper"))
+    {@Html.Raw(@Ajax.ActionLink("[replace]", "Confirm", new { id = Model.Id },
+            new AjaxOptions { UpdateTargetId = "TurnoverNoticeStatus" + Model.Id, OnBegin = "beginTurnoverNoticeStatus('TurnoverNoticeStatus" + Model.Id + "')", OnSuccess = "successTurnoverNoticeStatus('TurnoverNoticeStatus" + Model.Id + "')", OnFailure = "failureTurnoverNoticeStatus" })
+            .ToHtmlString().Replace("[replace]", "<i class=\"far fa-check-square fa-lg\" style=\"vertical-align: 13% \"></i> "))}
+
+    if (User.IsInRole("storekeeper") || User.IsInRole("manager"))
+    {@Html.Raw(@Ajax.ActionLink("[replace]", "Cancel", new { id = Model.Id },
+             new AjaxOptions { UpdateTargetId = "TurnoverNoticeStatus" + Model.Id, OnBegin = "beginTurnoverNoticeStatus('TurnoverNoticeStatus" + Model.Id + "')", OnSuccess = "successTurnoverNoticeStatus('TurnoverNoticeStatus" + Model.Id + "')", OnFailure = "failureTurnoverNoticeStatus" })
+             .ToHtmlString().Replace("[replace]", "<i class=\"far fa-trash-alt fa-lg\" style=\"vertical-align: 13% \"></i>"))}
+}

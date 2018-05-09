@@ -1,0 +1,11 @@
+﻿@model WholesaleBase.Models.Contract
+
+<div id="TurnoverMembersList">
+    <div class="form-group">
+        @Html.LabelFor(model => model.ContractorId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ContractorId, (SelectList)ViewBag.ContractorId, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ContractorId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

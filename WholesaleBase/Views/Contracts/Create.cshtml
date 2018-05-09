@@ -1,0 +1,119 @@
+﻿@model WholesaleBase.Models.Contract
+
+@{
+    ViewBag.Title = "Создание контракта";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.ConclusionDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ConclusionDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ConclusionDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GoodsId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.GoodsId, (SelectList)ViewBag.GoodsId, htmlAttributes: new { @class = "form-control", @id = "goods" })
+            @Html.ValidationMessageFor(model => model.GoodsId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.GoodsQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.GoodsQuantity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GoodsQuantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TurnoverPeriodicity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TurnoverPeriodicity, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TurnoverPeriodicity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TurnoverTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TurnoverTypeId, (SelectList)ViewBag.TurnoverTypeId, htmlAttributes: new { @class = "form-control", @id = "type" })
+            @Html.ValidationMessageFor(model => model.TurnoverTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div id="TurnoverMembersList">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContractorId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ContractorId, (SelectList)ViewBag.ContractorId, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ContractorId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.WarehouseId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.WarehouseId, (SelectList)ViewBag.WarehouseId, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Создать" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Отмена", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(function () {
+        $('#type').change(function()
+        {
+            // получаем выбранный id
+            var id = $(this).val();
+            var goodsId = $('#goods').val();
+            var WarehouseId = @Model.WarehouseId;
+            var ContractorId = @Model.ContractorId;
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("TurnoverMembersList")/' + id + '?goodsId=' + goodsId + '&WarehouseId=' + WarehouseId + '&ContractorId=' + ContractorId,
+                success: function (data) {
+                    // заменяем содержимое присланным частичным представлением
+                    $('#TurnoverMembersList').replaceWith(data);
+                }
+            });
+        });
+        $('#type').ready(function () { $('#type').change();});
+        $('#goods').change(function () { $('#type').change(); });
+    })
+
+</script>
+}

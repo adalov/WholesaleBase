@@ -1,0 +1,33 @@
+﻿@model WholesaleBase.Models.TurnoverNotice
+<div id="TurnoverMembersList">
+    <div class="form-group">
+        @Html.Label("Склад отправитель", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.TurnoverMemberId, (SelectList)ViewBag.TurnoverMemberId, htmlAttributes: new { @class = "form-control", @id = "member"})
+            @Html.ValidationMessageFor(model => model.TurnoverMemberId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Склад получатель", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div id="warehouse"> 
+                @Html.DropDownListFor(model => model.WarehouseId, (SelectList)ViewBag.WarehouseId, htmlAttributes: new { @class = "form-control" })
+            </div>
+            @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    </div>
+<script>
+    $('#member').change(function()
+        {
+            var id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Warehouse")/' + id,
+                success: function (data) {
+                    $('#warehouse').replaceWith(data);
+                }
+            });
+        });
+        $('#member').ready(function () { $('#member').change();});
+</script>

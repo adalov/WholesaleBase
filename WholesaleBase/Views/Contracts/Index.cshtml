@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WholesaleBase.Models.Contract>
+
+@{
+    ViewBag.Title = "Справочник договоров";
+}
+<script type="text/javascript">
+    function beginContractsList(args) {
+        // Animate
+        $('#dContractsList').fadeOut('normal');
+    }
+    function successContractsList() {
+        // Animate
+        $('#ContractsList').fadeIn('normal');
+    }
+    function failureContractsList() {
+        alert("Ошибка");
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ConclusionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TurnoverTypeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractorId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GoodsId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WarehouseId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GoodsQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TurnoverPeriodicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="ContractsList">
+        @Html.Partial("ContractsList", Model)
+    </tbody>
+
+</table>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WholesaleBase.Models.Goods>
+
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+
+<table class="table">
+    <tr>
+        <th></th>
+        @foreach (var warehouse in ViewBag.WarehousesList)
+        {
+            <th>
+                @warehouse.Name
+            </th>
+        }
+    </tr>
+
+    @foreach (var goods in Model)
+    {
+        <tr>
+            <td>
+                @goods.Supplier.Name @goods.Name (@goods.MeasureUnit.Name)
+            </td>
+            @foreach (var warehouse in ViewBag.WarehousesList)
+            {
+                foreach (var balance in goods.GoodsMovements.Where(m => m.Warehouse == warehouse && m.Date.Date == DateTime.Now.Date).Select(m => m.GoodsBalance).DefaultIfEmpty())
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => balance)
+                    </td>
+                }
+            }
+        </tr>
+    }
+
+</table>
+
+<style>
+    .table tr:nth-child(2n) {
+        background-color: beige;
+    }
+</style>

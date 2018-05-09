@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WholesaleBase.Models.Customer>
+
+@{
+    ViewBag.Title = "Справочник клиентов";
+}
+
+<script type="text/javascript">
+    function beginCustomersList(args) {
+        // Animate
+        $('#CustomersList').fadeOut('normal');
+    }
+    function successCustomersList() {
+        // Animate
+        $('#CustomersList').fadeIn('normal');
+    }
+    function failureCustomersList() {
+        alert("Ошибка при работе с базой данных");
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Representative)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="CustomersList">
+        @Html.Partial("CustomersList", Model)
+    </tbody>
+    </table>

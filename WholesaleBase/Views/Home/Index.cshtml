@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Система движения товаров на оптовой базе. Домашняя страница";
+}
+
+<div class="jumbotron">
+    <h1 style="font-size:40px">Система движения товаров на оптовой базе</h1>
+    <p class="lead">Контроль приходов, расходов и остатков товаров на каждом складе.</p>
+</div>
+
+@if (User.IsInRole("boss"))
+{
+    @Html.Partial("ListActionsForBoss")
+}
+else if (User.IsInRole("manager"))
+{
+    @Html.Partial("ListActionsForManager")
+}
+else if (User.IsInRole("storekeeper") && ViewBag.Warehouse.Status == true)
+{
+    @Html.Partial("ListActionsForStorekeepers")
+}

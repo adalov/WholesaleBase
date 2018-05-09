@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WholesaleBase.Models.Supplier>
+
+@{
+    ViewBag.Title = "Справочник поставщиков";
+}
+
+<script type="text/javascript">
+    function beginSuppliersList(args) {
+        // Animate
+        $('#SuppliersList').fadeOut('normal');
+    }
+    function successSuppliersList() {
+        // Animate
+        $('#SuppliersList').fadeIn('normal');
+    }
+    function failureSuppliersList() {
+        alert("Ошибка при работе с базой данных");
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Representative)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="SuppliersList">
+        @Html.Partial("SuppliersList", Model)
+    </tbody>
+    </table>

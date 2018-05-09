@@ -1,0 +1,112 @@
+﻿@model IEnumerable<WholesaleBase.Models.TurnoverNotice> 
+ <script type = "text/javascript" >
+    function beginTurnoverNoticeStatus(id) {
+        $("#" + id).fadeOut("normal");
+    }
+    function successTurnoverNoticeStatus(id) {
+        $("#" + id).fadeIn("normal");
+    }
+    function failureTurnoverNoticeStatus() {
+        alert("Ошибка");
+    }
+</script>
+
+
+    <h3>@ViewBag.Warehouse.Name</h3>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TurnoverTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TurnoverMemberId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoodsId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GoodsQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayName("Сумма")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TurnoverNoticeStatusId)
+            </th>
+            <th></th>
+        </tr>
+        @if (ViewBag.TurnoverType != null)
+    {
+        foreach (var item in Model.Where(m => m.WarehouseId == ViewBag.Warehouse.Id && m.Date.Date >= ViewBag.MinDate.Date && m.Date.Date <= ViewBag.MaxDate.Date && m.TurnoverTypeId == ViewBag.TurnoverType.Id).OrderBy(m => m.Date))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TurnoverType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TurnoverMember.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Goods.Supplier.Name) @Html.DisplayFor(modelItem => item.Goods.Name) (@Html.DisplayFor(modelItem => item.Goods.MeasureUnit.Name))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GoodsQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @(item.GoodsQuantity * item.Price)
+                </td>
+                <td id=@("TurnoverNoticeStatus" + @item.Id)>
+                    @Html.Action("TurnoverNoticeStatus", new { item = item })
+                </td>
+                <td></td>
+            </tr>
+    }
+}
+else
+{
+    foreach (var item in Model.Where(m => m.WarehouseId == ViewBag.Warehouse.Id && m.Date.Date >= ViewBag.MinDate.Date && m.Date.Date <= ViewBag.MaxDate.Date).OrderBy(m => m.Date))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TurnoverType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TurnoverMember.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Goods.Supplier.Name) @Html.DisplayFor(modelItem => item.Goods.Name) (@Html.DisplayFor(modelItem => item.Goods.MeasureUnit.Name))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GoodsQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @(item.GoodsQuantity * item.Price)
+            </td>
+            <td id=@("TurnoverNoticeStatus" + @item.Id) style="width:15%">
+                @Html.Action("TurnoverNoticeStatus", new { item = item })
+            </td>
+            <td></td>
+        </tr>
+}
+}
+
+    </table>
+

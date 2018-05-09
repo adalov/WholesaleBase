@@ -1,0 +1,6 @@
+﻿@model WholesaleBase.Models.TurnoverNotice
+
+<div id="warehouse">
+    @Html.DropDownListFor(model => model.WarehouseId, (SelectList)ViewBag.WarehouseId, htmlAttributes: new { @class = "form-control" })
+</div>
+

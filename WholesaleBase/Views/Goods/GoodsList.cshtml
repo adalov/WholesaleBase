@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WholesaleBase.Models.Goods>
+
+
+
+    @foreach (var item in Model.OrderByDescending(m => m.Status))
+    {
+    <tr @if (item.Status == false) { @Html.Raw("style = \"color:#AAA\"") }>
+        <td>
+            @Html.DisplayFor(modelItem => item.Supplier.Name) @Html.DisplayFor(modelItem => item.Name) (@Html.DisplayFor(modelItem => item.MeasureUnit.Name))
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PurchasePrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SellingPrice)
+        </td>
+        <td>
+            @if (User.IsInRole("storekeeper"))
+        {
+            <a href='@Url.Action("Edit", new { id = item.Id })'><i class="far fa-edit fa-lg" style="vertical-align: 25%"></i></a>
+
+            @Html.Raw(@Ajax.ActionLink("[replace]", "RemoveOrRestore", new { id = item.Id },
+                               new AjaxOptions { UpdateTargetId = "GoodsList", OnBegin = "beginGoodsList", OnSuccess = "successGoodsList", OnFailure = "failureGoodsList" })
+                               .ToHtmlString().Replace("[replace]", item.Status ? "<i class=\"far fa-minus-square fa-lg\" style=\"vertical-align: 13% \"></i>" : "<i class=\"far fa-plus-square fa-lg\" style=\"vertical-align: 13% \"></i>"))
+    }
+        </td>
+    </tr>
+    }
+

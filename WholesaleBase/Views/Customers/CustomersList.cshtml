@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WholesaleBase.Models.Customer> 
+
+
+    @foreach (var item in Model.OrderByDescending(m => m.Status))
+    {
+        <tr @if (item.Status == false) { @Html.Raw("style = \"color:#AAA\"") }>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Representative)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                <a href='@Url.Action("Edit", new { id = item.Id })'><i class="far fa-edit fa-lg" style="vertical-align: 25%"></i></a>
+
+                @Html.Raw(@Ajax.ActionLink("[replace]", "RemoveOrRestore", new { id = item.Id },
+                      new AjaxOptions { UpdateTargetId = "CustomersList", OnBegin = "beginCustomersList", OnSuccess = "successCustomersList", OnFailure = "failureCustomersList" })
+                      .ToHtmlString().Replace("[replace]", item.Status ? "<i class=\"far fa-minus-square fa-lg\" style=\"vertical-align: 13% \"></i>" : "<i class=\"far fa-plus-square fa-lg\" style=\"vertical-align: 13% \"></i>"))
+            </td>
+        </tr>
+    }
+
+

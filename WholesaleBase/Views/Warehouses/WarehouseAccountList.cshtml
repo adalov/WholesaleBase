@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WholesaleBase.Models.WarehouseAccountView>
+
+    @foreach (var item in Model.OrderByDescending(m => m.Warehouse.Status))
+    {
+
+        <tr @if (item.Warehouse.Status == false) { @Html.Raw("style = \"color:#AAA\"") }>
+             <td>
+                @Html.DisplayFor(modelItem => item.Account.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Warehouse.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Warehouse.Representative)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Warehouse.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Warehouse.Address)
+            </td>
+            <td>
+                <a href='@Url.Action("Edit", "Account", new { Accountid = item.Account.Id, WarehouseId = item.Warehouse.Id })'><i class="far fa-edit fa-lg" style="vertical-align: 25%"></i></a>
+
+                @Html.Raw(@Ajax.ActionLink("[replace]", "RemoveOrRestore", new { id = item.Warehouse.Id },
+             new AjaxOptions { UpdateTargetId = "WarehouseAccountList", OnBegin = "beginWarehouseAccountList", OnSuccess = "successWarehouseAccountList", OnFailure = "failureWarehouseAccountList" })
+             .ToHtmlString().Replace("[replace]", item.Warehouse.Status ? "<i class=\"far fa-minus-square fa-lg\" style=\"vertical-align: 13% \"></i>" : "<i class=\"far fa-plus-square fa-lg\" style=\"vertical-align: 13% \"></i>"))
+         
+            </td>
+           
+           
+        </tr>
+    }
+
+
+

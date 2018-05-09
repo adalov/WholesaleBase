@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WholesaleBase.Models.Contract> 
+    @foreach(var item in Model.OrderByDescending(m => m.Status))
+{
+<tr @if (item.Status == false) {@Html.Raw("style = \"color:#AAA\"") }>
+    <td>
+        @Html.DisplayFor(modelItem => item.ConclusionDate)
+    </td>
+    <th>
+        @Html.DisplayFor(modelItem => item.TurnoverType.Name)
+    </th>
+    <td>
+        @Html.DisplayFor(modelItem => item.Contractor.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Goods.Supplier.Name) @Html.DisplayFor(modelItem => item.Goods.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Warehouse.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.GoodsQuantity)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TurnoverPeriodicity)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+
+    <td>
+        @if (item.Status == true)
+        {@Html.Raw(@Ajax.ActionLink("[replace]", "Delete", new { id = item.Id },
+            new AjaxOptions { UpdateTargetId = "ContractsList", OnBegin = "beginContractsList", OnSuccess = "successContractsList", OnFailure = "failureContractsList" })
+            .ToHtmlString().Replace("[replace]", "<i class=\"far fa-trash-alt fa-lg\" style=\"vertical-align: 13% \"></i>"))}
+    </td>
+</tr>
+}

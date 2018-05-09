@@ -1,0 +1,11 @@
+﻿<link href="/Content/accordeon.css" rel="stylesheet">
+@if (User.IsInRole("boss"))
+{
+    ViewBag.Title = "Журнал учёта движения товаров";
+    @Html.Partial("GoodsMovement")
+}
+else if (User.IsInRole("manager"))
+{
+    ViewBag.Title = "Журнал остатков товаров";
+    @Html.Partial("GoodsBalance");
+}

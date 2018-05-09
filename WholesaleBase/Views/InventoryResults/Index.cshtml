@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WholesaleBase.Models.InventoryResult>
+
+@{
+    ViewBag.Title = "Сличительная ведомость результатов инвентаризации";
+}
+<script type="text/javascript">
+    function beginInventoryResultsList(args) {
+        // Animate
+        $('#InventoryResultsList').fadeOut('normal');
+    }
+    function successInventoryResultsList() {
+        // Animate
+        $('#InventoryResultsList').fadeIn('normal');
+    }
+    function failureInventoryResultsList() {
+        alert("Ошибка");
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+
+    @using (Ajax.BeginForm("Index", new AjaxOptions { UpdateTargetId = "InventoryResultsList", OnBegin = "beginInventoryResultsList", OnSuccess = "successInventoryResultsList", OnFailure = "failureInventoryResultsList" }))
+    {
+        @Html.DropDownList("SelectedWarehouseId", new SelectList(ViewBag.WarehousesList, "Id", "Name"), "Все склады", htmlAttributes: new { @class = "form-control", style = "display: inline-block; width: 200px;", onchange = "$('#form0').submit();" }) @("  ")
+        @Html.Editor("MinDate", new { htmlAttributes = new { @Value = ViewBag.MinDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } }) @(" - ")
+        @Html.Editor("MaxDate", new { htmlAttributes = new { @Value = ViewBag.MaxDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } })
+    }
+
+
+<br />
+<div id="InventoryResultsList">@Html.Partial("InventoryResultsList", Model)</div>
+
+

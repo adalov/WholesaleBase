@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WholesaleBase.Models.Goods>
+
+@{
+    ViewBag.Title = "Справочник товаров";
+}
+<script type="text/javascript">
+    function beginGoodsList(args) {
+        // Animate
+        $('#GoodsList').fadeOut('normal');
+    }
+    function successGoodsList() {
+        // Animate
+        $('#GoodsList').fadeIn('normal');
+    }
+    function failureGoodsList() {
+        alert("Ошибка");
+    }
+</script>
+
+<h2>Журнал товаров</h2>
+
+<p>
+    @if (User.IsInRole("storekeeper"))
+    {
+        @Html.ActionLink("Создать", "Create")
+        <br />
+        @Html.ActionLink("Провести инвентаризацию", "Inventorization")
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PurchasePrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SellingPrice)
+        </th>
+        <th></th>
+    </tr>
+    <tbody id="GoodsList">@Html.Partial("GoodsList", Model)</tbody>
+    </table>
+

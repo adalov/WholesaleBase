@@ -1,0 +1,30 @@
+﻿@model IEnumerable<WholesaleBase.Models.Goods>
+<script type="text/javascript">
+    function beginGoodsMovementsList(args) {
+        // Animate
+        $('#GoodsMovementsList').fadeOut('normal');
+    }
+    function successGoodsMovementsList() {
+        // Animate
+        $('#GoodsMovementsList').fadeIn('normal');
+    }
+    function failureGoodsMovementsList() {
+        alert("Ошибка");
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+
+@using (Ajax.BeginForm("Index", new AjaxOptions { UpdateTargetId = "GoodsMovementsList", OnBegin = "beginGoodsMovementsList", OnSuccess = "successGoodsMovementsList", OnFailure = "failureGoodsMovementsList" }))
+{
+    @Html.DropDownList("SelectedWarehouseId", new SelectList(ViewBag.WarehousesList, "Id", "Name"), "Все склады", htmlAttributes: new { @class = "form-control", style = "display: inline-block; width: 200px;", onchange = "$('#form0').submit();" }) @("  ")
+    @Html.Editor("MinDate", new { htmlAttributes = new { @Value = ViewBag.MinDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } }) @(" - ")
+    @Html.Editor("MaxDate", new { htmlAttributes = new { @Value = ViewBag.MaxDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } })
+}
+
+<br />
+
+<div id="GoodsMovementsList">@Html.Partial("GoodsMovementsList", Model)</div>
+
+
+
+

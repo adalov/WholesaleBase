@@ -1,0 +1,15 @@
+﻿@model WholesaleBase.Models.InventorizationViewModel
+
+@using (Ajax.BeginForm("InventorizationSend", new AjaxOptions { UpdateTargetId = "InventorizationPartial" + Model.Id, OnBegin = "beginInventorizationPartial('" + Model.Id + "')", OnSuccess = "successInventorizationPartial('" + Model.Id + "')", OnFailure = "failureInventorizationPartial" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    if (Model.Status == false)
+    {
+        @Html.Editor("goodsQuantity", new { htmlAttributes = new { style = "width:100px;" } })
+        <button type="submit" style="border:none; background: none;"><i class="far fa-check-square fa-lg" style="vertical-align: 13%"></i></button>
+    }
+    else
+    {
+        @("Готово")
+    }
+}

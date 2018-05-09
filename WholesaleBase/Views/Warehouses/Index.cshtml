@@ -1,0 +1,48 @@
+﻿@model IEnumerable<WholesaleBase.Models.WarehouseAccountView>
+
+@{
+    ViewBag.Title = "Справочник складов";
+}
+<script type="text/javascript">
+    function beginWarehouseAccountList(args) {
+        $('#WarehouseAccountList').fadeOut('normal');
+    }
+    function successWarehouseAccountList() {
+        $('#WarehouseAccountList').fadeIn('normal');
+    }
+    function failureWarehouseAccountList() {
+        alert("Ошибка при работе с базой данных");
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Создать", "Register", "Account")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Логин")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </th>
+        <th>
+            @Html.DisplayName("МОЛ")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Warehouse.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Warehouse.Address)
+        </th>
+        <th>
+
+        </th>
+
+    </tr>
+    <tbody id="WarehouseAccountList">
+        @Html.Partial("WarehouseAccountList", Model)
+    </tbody>
+    </table>

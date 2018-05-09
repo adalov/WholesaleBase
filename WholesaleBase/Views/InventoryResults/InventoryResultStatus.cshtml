@@ -1,0 +1,13 @@
+﻿@model WholesaleBase.Models.InventoryResult
+
+@if (Model.Status == true)
+    {
+            @:Подтверждено
+    }
+    else
+    {@Html.Raw(@Ajax.ActionLink("[replace]", "Confirm", new { id = Model.Id },
+new AjaxOptions { UpdateTargetId = "InventoryResultStatus" + Model.Id, OnBegin = "beginInventoryResultStatus('InventoryResultStatus" + Model.Id + "')", OnSuccess = "successInventoryResultStatus('InventoryResultStatus" + Model.Id + "')", OnFailure = "failureInventoryResultStatus" })
+.ToHtmlString().Replace("[replace]", "<i class=\"far fa-check-square fa-lg\" style=\"vertical-align: 13% \"></i>"))}
+
+       
+    

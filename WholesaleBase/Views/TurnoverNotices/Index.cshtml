@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WholesaleBase.Models.TurnoverNotice>
+
+@{
+    ViewBag.Title = "Журнал уведомлений оборотов";
+}
+<script type="text/javascript">
+    function beginTurnoverNoticesList(args) {
+        $('#TurnoverNoticesList').fadeOut('normal');
+    }
+    function successTurnoverNoticesList() {
+        $('#TurnoverNoticesList').fadeIn('normal');
+    }
+    function failureTurnoverNoticesList() {
+        alert("Ошибка");
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+@using (Ajax.BeginForm("Index", new AjaxOptions { UpdateTargetId = "TurnoverNoticesList", OnBegin = "beginTurnoverNoticesList", OnSuccess = "successTurnoverNoticesList", OnFailure = "failureTurnoverNoticesList" }))
+{
+    @Html.DropDownList("SelectedTurnoverTypeId", new SelectList(ViewBag.TurnoverTypesList, "Id", "Name"), "Все обороты товаров", htmlAttributes: new { @class = "form-control", style = "display: inline-block; width: 200px;", onchange = "$('#form0').submit();" }) @("  ")
+
+    if (!User.IsInRole("storekeeper"))
+    {    
+        @Html.DropDownList("SelectedWarehouseId", new SelectList(ViewBag.WarehousesList, "Id", "Name"), htmlAttributes: new { @class = "form-control", style = "display: inline-block; width: 200px;", onchange = "$('#form0').submit();" }) @("  ")
+        @Html.Editor("MinDate", new { htmlAttributes = new { @Value = ViewBag.MinDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } }) @(" - ")
+        @Html.Editor("MaxDate", new { htmlAttributes = new { @Value = ViewBag.MaxDate.ToString("yyyy-MM-dd"), @class = "form-control", style = "display: inline-block; width: 150px;", type = "date", onchange = "$('#form0').submit();" } })
+    }
+}
+
+
+
+<br />
+<p>
+    @if (User.IsInRole("manager"))
+    {@Html.ActionLink("Создать", "Create")}
+</p>
+<div id="TurnoverNoticesList">@Html.Partial("TurnoverNoticesList", Model)</div>
+

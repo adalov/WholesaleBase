@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WholesaleBase.Models.InventorizationViewModel>
+
+@{
+    ViewBag.Title = "Инвентаризация";
+}
+
+<h2>@ViewBag.Title</h2>
+<script type="text/javascript">
+    function beginInventorizationPartial(id) {
+        $('#InventorizationPartial' + id).fadeOut('normal');
+    }
+    function successInventorizationPartial(id) {
+        $('#InventorizationPartial' + id).fadeIn('normal');
+    }
+    function failureInventorizationPartial() {
+        alert("Ошибка");
+    }
+</script>
+<p>@Html.ActionLink("Сбросить", "InventorizationReset")</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayName("Фактическое количество")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Supplier.Name) @Html.DisplayFor(modelItem => item.Name) (@Html.DisplayFor(modelItem => item.MeasureUnit.Name))
+            </td>
+            <td style="width:20%" id="@("InventorizationPartial" + @item.Id)">
+                @Html.Partial("InventorizationPartial", item)
+            </td>
+        </tr>
+
+    }
+
+</table>

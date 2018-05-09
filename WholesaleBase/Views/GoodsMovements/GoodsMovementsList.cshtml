@@ -1,0 +1,92 @@
+﻿@model IEnumerable<WholesaleBase.Models.Goods>
+@using WholesaleBase.Models
+
+<h3>@if (ViewBag.Warehouse != null)
+{@(((Warehouse)ViewBag.Warehouse).Name)}</h3>
+
+<table class="table">
+    <tr><th style="width:70%">Товар</th><th>Приход</th><th>Расход</th><th>Остаток</th></tr>
+    <tr>
+        <td colspan="4" style="padding:0">
+            <div class="accordion">
+                <ul>
+                    @foreach (var goods in Model)
+                    {
+                    <li>
+                        <input type="checkbox" checked>
+                        @if (ViewBag.Warehouse != null)
+                        {
+                    <table class="table title_block">
+                        <tr>
+                            <th style="width:70%">@goods.Name</th>
+                            <th style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsArrival).Sum()</th>
+                            <th style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsConsumption).Sum()</th>
+                            <th style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsBalance).Sum()</th>
+                        </tr>
+                    </table>
+                    <div class="msg">
+                        <table class="table table-condensed table-hover">
+                            @{
+                                var date = ViewBag.MinDate.Date;
+                                while (date <= ViewBag.MaxDate.Date)
+                                {
+                                    <tr>
+                                        <td style="width:70%">@String.Format("{0:dd.MM.yy}", date)</td>
+                                        <td style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date == date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsArrival).FirstOrDefault()</td>
+                                        <td style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date == date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsConsumption).FirstOrDefault()</td>
+                                        <td style="width:10%">@goods.GoodsMovements.Where(gm => gm.Date.Date == date && gm.WarehouseId == ViewBag.Warehouse.Id).Select(gm => gm.GoodsBalance).FirstOrDefault()</td>
+                                    </tr>
+                                    date = date.AddDays(1);
+                                }
+                            }
+                        </table>
+                    </div>
+                            }
+                            else
+                            {
+                                <table class="table title_block">
+                                    <tr>
+                                        <th style="width:70%"> @goods.Name </th>
+                                        <th style="width:10%"> @goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date).Select(gm => gm.GoodsArrival).Sum() </th>
+                                        <th style="width:10%"> @goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date).Select(gm => gm.GoodsConsumption).Sum() </th>
+                                        <th style="width:10%"> @goods.GoodsMovements.Where(gm => gm.Date.Date >= ViewBag.MinDate.Date && gm.Date.Date <= ViewBag.MaxDate.Date).Select(gm => gm.GoodsBalance).Sum() </th>
+                                    </tr>
+                                </table>
+
+                    <div class="msg">
+
+                        <table class="table table-condensed table-hover">
+                            @{
+                                var date = ViewBag.MinDate.Date;
+                                while (date <= ViewBag.MaxDate.Date)
+                                {                                    
+                                    <tr>
+                                        <td style="width:70%">
+                                        @String.Format("{0:dd.MM.yy}", date)
+                                        </td>
+                                        <td style="width:10%">
+                                        @goods.GoodsMovements.Where(gm => gm.Date.Date == date).Select(gm => gm.GoodsArrival).Sum()
+                                        </td>
+                                        <td style="width:10%">
+                                        @goods.GoodsMovements.Where(gm => gm.Date.Date == date).Select(gm => gm.GoodsConsumption).Sum()
+                                        </td>
+                                        <td style="width:10%">
+                                        @goods.GoodsMovements.Where(gm => gm.Date.Date == date).Select(gm => gm.GoodsBalance).Sum()
+                                        </td>
+                                    </tr>
+                                    date = date.AddDays(1);
+                                }
+                            }
+                        </table>
+                    </div>
+                        }
+                    </li>
+                    }
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+

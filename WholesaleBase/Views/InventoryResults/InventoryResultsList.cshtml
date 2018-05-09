@@ -1,0 +1,99 @@
+﻿@model IEnumerable<WholesaleBase.Models.InventoryResult>
+<script type="text/javascript">
+    function beginInventoryResultStatus(id) {
+        // Animate
+        $("#" + id).fadeOut("normal");
+    }
+    function successInventoryResultStatus(id) {
+        // Animate
+        $("#" + id).fadeIn("normal");
+    }
+    function failureInventoryResultStatus() {
+        alert("Ошибка");
+    }
+</script>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Goods.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InventoryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActualGoodsBalance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegisteredGoodsBalance)
+        </th>
+        <th>
+            @Html.DisplayName("Расхождение")
+        </th>
+        <th></th>
+    </tr>
+    @if (ViewBag.Warehouse != null)
+    {
+        foreach (var item in Model.Where(m => m.WarehouseId == ViewBag.Warehouse.Id && m.InventoryDate.Date >= ViewBag.MinDate.Date && m.InventoryDate.Date <= ViewBag.MaxDate.Date).OrderByDescending(m => m.InventoryDate))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Goods.Supplier.Name) @Html.DisplayFor(modelItem => item.Goods.Name) (@Html.DisplayFor(modelItem => item.Goods.MeasureUnit.Name))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Warehouse.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActualGoodsBalance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredGoodsBalance)
+                </td>
+                <td>
+                    @(item.ActualGoodsBalance - item.RegisteredGoodsBalance)
+                </td>
+
+                <td id=@("InventoryResultStatus" + @item.Id)>
+                    @Html.Action("InventoryResultStatus", new { item = item })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        foreach (var item in Model.Where(m => m.InventoryDate.Date >= ViewBag.MinDate.Date && m.InventoryDate.Date <= ViewBag.MaxDate.Date).OrderByDescending(m => m.InventoryDate))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Goods.Supplier.Name) @Html.DisplayFor(modelItem => item.Goods.Name) (@Html.DisplayFor(modelItem => item.Goods.MeasureUnit.Name))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Warehouse.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActualGoodsBalance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisteredGoodsBalance)
+                </td>
+                <td>
+                    @(item.ActualGoodsBalance - item.RegisteredGoodsBalance)
+                </td>
+
+                <td id=@("InventoryResultStatus" + @item.Id)>
+                    @Html.Action("InventoryResultStatus", new { item = item })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
