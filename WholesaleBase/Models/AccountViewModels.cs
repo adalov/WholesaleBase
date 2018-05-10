@@ -10,7 +10,7 @@ namespace WholesaleBase.Models
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }
     }
-
+    //
     public class ExternalLoginListViewModel
     {
         public string ReturnUrl { get; set; }
